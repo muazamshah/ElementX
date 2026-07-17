@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Interactive Periodic Table - Explore all 118 chemical elements">
+    <meta name="keywords" content="periodic table, chemistry, elements, science, education">
+    <meta name="author" content="Periodic Table Platform">
+    <title>Interactive Periodic Table | Explore All 118 Elements</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div id="loading-screen" class="loading-screen">
+        <div class="loader-container">
+            <div class="atom-loader">
+                <div class="nucleus"></div>
+                <div class="orbit orbit-1"><div class="electron"></div></div>
+                <div class="orbit orbit-2"><div class="electron"></div></div>
+                <div class="orbit orbit-3"><div class="electron"></div></div>
+            </div>
+            <h2 class="loading-text">Loading Periodic Table</h2>
+            <div class="loading-bar">
+                <div class="loading-progress"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation Bar -->
+    <nav id="navbar" class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <div class="logo">
+                    <svg viewBox="0 0 40 40" class="logo-icon">
+                        <circle cx="20" cy="20" r="18" fill="none" stroke="currentColor" stroke-width="2"/>
+                        <circle cx="20" cy="20" r="3" fill="currentColor"/>
+                        <ellipse cx="20" cy="20" rx="18" ry="8" fill="none" stroke="currentColor" stroke-width="1.5" transform="rotate(0 20 20)"/>
+                        <ellipse cx="20" cy="20" rx="18" ry="8" fill="none" stroke="currentColor" stroke-width="1.5" transform="rotate(60 20 20)"/>
+                        <ellipse cx="20" cy="20" rx="18" ry="8" fill="none" stroke="currentColor" stroke-width="1.5" transform="rotate(120 20 20)"/>
+                    </svg>
+                </div>
+                <span class="brand-text">PeriodicTable</span>
+            </div>
+
+            <div class="nav-search">
+                <input type="text" id="search-input" placeholder="Search elements..." class="search-input">
+                <button class="search-btn" aria-label="Search">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="11" cy="11" r="8"/>
+                        <path d="m21 21-4.35-4.35"/>
+                    </svg>
+                </button>
+            </div>
+
+            <div class="nav-actions">
+                <button class="icon-btn" id="dark-mode-toggle" aria-label="Toggle dark mode">
+                    <svg class="sun-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="5"/>
+                        <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+                    </svg>
+                    <svg class="moon-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main id="main-content">
+        <!-- Periodic Table Section -->
+        <section id="table-section" class="table-section">
+            <div class="section-header">
+                <h2 class="section-title">Periodic Table of Elements</h2>
+                <div class="table-controls">
+                    <div class="filter-group">
+                        <label for="category-filter">Category:</label>
+                        <select id="category-filter" class="filter-select">
+                            <option value="all">All Categories</option>
+                            <option value="Alkali Metals">Alkali Metals</option>
+                            <option value="Alkaline Earth Metals">Alkaline Earth Metals</option>
+                            <option value="Transition Metals">Transition Metals</option>
+                            <option value="Post-transition Metals">Post-transition Metals</option>
+                            <option value="Metalloids">Metalloids</option>
+                            <option value="Reactive Non-metals">Reactive Non-metals</option>
+                            <option value="Noble Gases">Noble Gases</option>
+                            <option value="Lanthanides">Lanthanides</option>
+                            <option value="Actinides">Actinides</option>
+                            <option value="Unknown Properties">Unknown Properties</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="periodic-table-container">
+                <div class="periodic-table" id="periodic-table">
+                    <!-- Elements will be dynamically generated here -->
+                </div>
+            </div>
+
+            <div class="legend">
+                <h3 class="legend-title">Element Categories</h3>
+                <div class="legend-items" id="legend-items">
+                    <!-- Legend items will be generated dynamically -->
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Element Detail Panel -->
+    <div id="element-panel" class="element-panel">
+        <div class="panel-content">
+            <button class="panel-close" id="panel-close" aria-label="Close panel">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M18 6L6 18M6 6l12 12"/>
+                </svg>
+            </button>
+
+            <div class="panel-header">
+                <div class="element-badge" id="panel-element-badge">
+                    <span class="element-number" id="panel-atomic-number">1</span>
+                    <span class="element-symbol" id="panel-symbol">H</span>
+                    <span class="element-name" id="panel-name">Hydrogen</span>
+                </div>
+            </div>
+
+            <div class="panel-body">
+                <div class="panel-tabs">
+                    <button class="panel-tab active" data-tab="overview">Overview</button>
+                    <button class="panel-tab" data-tab="properties">Properties</button>
+                    <button class="panel-tab" data-tab="uses">Uses</button>
+                    <button class="panel-tab" data-tab="discovery">Discovery</button>
+                    <button class="panel-tab" data-tab="safety">Safety</button>
+                    <button class="panel-tab" data-tab="history">History</button>
+                </div>
+
+                <div class="tab-content active" id="tab-overview">
+                    <div class="element-overview">
+                        <div class="overview-item">
+                            <span class="overview-label">Atomic Mass</span>
+                            <span class="overview-value" id="panel-atomic-mass">1.008 u</span>
+                        </div>
+                        <div class="overview-item">
+                            <span class="overview-label">Category</span>
+                            <span class="overview-value" id="panel-category">Reactive Non-metals</span>
+                        </div>
+                        <div class="overview-item">
+                            <span class="overview-label">State</span>
+                            <span class="overview-value" id="panel-state">Gas</span>
+                        </div>
+                    </div>
+                    <div class="detail-section">
+                        <h4>Basic Information</h4>
+                        <div class="detail-grid">
+                            <div class="detail-item">
+                                <span class="detail-label">Group</span>
+                                <span class="detail-value" id="panel-group">1</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Period</span>
+                                <span class="detail-value" id="panel-period">1</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Block</span>
+                                <span class="detail-value" id="panel-block">s</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Electron Configuration</span>
+                                <span class="detail-value" id="panel-electron-config">1s¹</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-content" id="tab-properties">
+                    <div class="detail-section">
+                        <h4>Physical Properties</h4>
+                        <div class="detail-grid">
+                            <div class="detail-item">
+                                <span class="detail-label">Atomic Radius</span>
+                                <span class="detail-value" id="panel-atomic-radius">53 pm</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Density</span>
+                                <span class="detail-value" id="panel-density">0.00008988 g/cm³</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Melting Point</span>
+                                <span class="detail-value" id="panel-melting-point">13.99 K</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Boiling Point</span>
+                                <span class="detail-value" id="panel-boiling-point">20.271 K</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="detail-section">
+                        <h4>Chemical Properties</h4>
+                        <div class="detail-grid">
+                            <div class="detail-item">
+                                <span class="detail-label">Electronegativity</span>
+                                <span class="detail-value" id="panel-electronegativity">2.20</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Oxidation States</span>
+                                <span class="detail-value" id="panel-oxidation-states">-1, +1</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Valence Electrons</span>
+                                <span class="detail-value" id="panel-valence-electrons">1</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-content" id="tab-uses">
+                    <div class="detail-section">
+                        <h4>Uses & Applications</h4>
+                        <p class="detail-text" id="panel-uses"></p>
+                    </div>
+                    <div class="detail-section">
+                        <h4>Interesting Facts</h4>
+                        <p class="detail-text" id="panel-interesting-facts"></p>
+                    </div>
+                </div>
+
+                <div class="tab-content" id="tab-discovery">
+                    <div class="detail-section">
+                        <h4>Discovery</h4>
+                        <div class="detail-grid">
+                            <div class="detail-item">
+                                <span class="detail-label">Discovered</span>
+                                <span class="detail-value" id="panel-discovery-year">1766</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Discovered By</span>
+                                <span class="detail-value" id="panel-discovered-by">Henry Cavendish</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Natural Occurrence</span>
+                                <span class="detail-value" id="panel-natural-occurrence">Primordial</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Radioactivity</span>
+                                <span class="detail-value" id="panel-radioactivity">No</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-content" id="tab-safety">
+                    <div class="detail-section">
+                        <h4>Safety Information</h4>
+                        <p class="detail-text" id="panel-safety-info"></p>
+                    </div>
+                    <div class="detail-section">
+                        <h4>Health Hazards</h4>
+                        <p class="detail-text" id="panel-health-hazards"></p>
+                    </div>
+                    <div class="detail-section">
+                        <h4>Environmental Impact</h4>
+                        <p class="detail-text" id="panel-environmental-impact"></p>
+                    </div>
+                </div>
+
+                <div class="tab-content" id="tab-history">
+                    <div class="detail-section">
+                        <h4>Description</h4>
+                        <p class="detail-description" id="panel-description"></p>
+                    </div>
+                    <div class="detail-section">
+                        <h4>History</h4>
+                        <p class="detail-text" id="panel-history"></p>
+                    </div>
+                    <div class="detail-section">
+                        <h4>Common Compounds</h4>
+                        <p class="detail-text" id="panel-common-compounds"></p>
+                    </div>
+                    <div class="detail-section">
+                        <h4>Isotopes</h4>
+                        <p class="detail-text" id="panel-isotopes"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>PeriodicTable</h4>
+                    <p>Interactive chemistry education platform. Explore all 118 elements with detailed information and interactive features.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Legal</h4>
+                    <ul>
+                        <li><a href="#" onclick="showLegalModal('privacy')">Privacy Policy</a></li>
+                        <li><a href="#" onclick="showLegalModal('terms')">Terms of Service</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Developer</h4>
+                    <div class="social-links">
+                        <a href="https://github.com/muazamshah" target="_blank" rel="noopener noreferrer" aria-label="GitHub Profile">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 PeriodicTable. Crafted with precision by <a href="https://github.com/muazamshah" target="_blank" rel="noopener noreferrer">Muazam shah</a>. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Legal Modal -->
+    <div id="legal-modal" class="legal-modal">
+        <div class="legal-modal-overlay" onclick="closeLegalModal()"></div>
+        <div class="legal-modal-content">
+            <button class="legal-modal-close" onclick="closeLegalModal()" aria-label="Close">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M18 6L6 18M6 6l12 12"/>
+                </svg>
+            </button>
+            <div id="legal-modal-body"></div>
+        </div>
+    </div>
+
+    <!-- Panel Overlay -->
+    <div id="panel-overlay" class="panel-overlay"></div>
+
+    <script src="script.js"></script>
+</body>
+</html>
