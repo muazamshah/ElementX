@@ -540,7 +540,7 @@ function showLegalModal(type) {
             <p>We may update this Privacy Policy from time to time. Any changes will be posted on this page.</p>
             
             <h3>Contact</h3>
-            <p>If you have questions about this Privacy Policy, please reach out via GitHub: <a href="https://github.com/MalakMughal772" target="_blank" rel="noopener noreferrer">MalakMughal772</a></p>
+            <p>If you have questions about this Privacy Policy, please reach out via GitHub: <a href="https://github.com/muazamshah" target="_blank" rel="noopener noreferrer">MalakMughal772</a></p>
         `,
         terms: `
             <h2>Terms of Service</h2>
