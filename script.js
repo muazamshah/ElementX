@@ -96,7 +96,7 @@ function cacheDOMElements() {
  */
 async function loadElements() {
     try {
-        const response = await fetch('data/elements.json');
+        const response = await fetch('elements.json');
         if (!response.ok) {
             throw new Error('Failed to load elements data');
         }
